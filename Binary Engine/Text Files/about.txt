@@ -1,0 +1,20 @@
+
+Visualizing text using Matplotlib and Kivy:
+
+The app's GUI was designed in Kivy.Kivy is a popular cross-platform GUI design library written in Python.
+
+Use the requirements.txt file to install the required python library dependencies.
+Use requires.txt file to install the required Kivy Garden package.
+
+Author: Moses Bankole
+Github Username : mosesab
+Contact: thedevmosesb@gmail.com
+
+......................................................................................................................
+Nobody:
+
+Absolutely Nobody:
+
+Me: Here's A Well-Liked  Quote:
+Software is made when a programmer loves an idea very much, they stay up all night and then push to github the next day. : Sam Kottler"
+

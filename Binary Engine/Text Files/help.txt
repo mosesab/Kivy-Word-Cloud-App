@@ -1,0 +1,23 @@
+
+
+The app is used to Visualize text as a Word Cloud.
+
+HOME TAB
+            
+The Home Tab is where text input is received from the user and moved to the text box in word cloud
+
+Paste text from the clipboard into the text input field or navigate to a ".txt" file using the file chooser.
+The app only supports utf-8 text files.
+
+
+WORD CLOUD
+            
+Word clouds are a useful way to visualize text data because they make understanding word frequencies easier.
+
+Words that appear more frequently within the text appear larger in the cloud. 
+
+Stop words are words that are removed from the word cloud and will not be displayed in the cloud. Words like "the", "we" , "i", "and" etc, are usually added as stopwords.
+
+Author: Moses Bankole
+Github Username : mosesab
+Contact: thedevmosesb@gmail.com

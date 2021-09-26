@@ -1,0 +1,9 @@
+
+Kivy Garden Package             Version
+------------------- ----------
+
+matplotlib
+ 
+// Note: USE "garden install matplotlib" after installing requirements.txt
+
+// or google "how to install kivy garden packages"

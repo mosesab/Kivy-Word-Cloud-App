@@ -1,0 +1,418 @@
+# Menu item in the DrawerList list.
+<ItemDrawer>:
+    theme_text_color: "Primary"
+	on_release: app.root.set_screen_item(self)
+
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        theme_text_color: 'Custom'
+        text_color: app.theme_cls.primary_color       
+
+
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+    padding: "8dp"
+    spacing: "8dp"
+
+    AnchorLayout:
+        anchor_x: "left"
+        size_hint_y: None
+        height: avatar.height
+
+        Image:
+            id: avatar
+            size_hint: None, None
+            size: "56dp", "56dp"
+            source: "M-Logo.png"
+
+    MDLabel:
+        text: "Word Cloud Generator"
+        theme_text_color: "Primary"
+        font_style: "Body1"
+        size_hint_y: None
+        height: self.texture_size[1]
+
+    MDLabel:
+        text: "E-mail: thedevmosesb@gmail.com"
+        theme_text_color: "Primary"
+        font_style: "Caption"
+        size_hint_y: None
+        height: self.texture_size[1]
+    MDLabel:
+        text: "Github_Username: mosesab"
+        theme_text_color: "Primary"
+        font_style: "Caption"
+        size_hint_y: None
+        height: self.texture_size[1]
+     
+
+	ScrollView:
+		MDList:
+			id: md_list
+			
+
+
+<Container>:
+	box_display : box_display
+	orientation: "vertical"
+	BoxLayout:
+		id: box_display
+		orientation: "vertical"
+		MDRaisedButton: 
+			text: "Go back"
+			pos_hint: {"top": .5} 
+			pos_hint: {"center_x": .5, "center_y": .45} 
+			on_release: setattr(app.root.screen_manager, "current", "Word Cloud")
+
+<MyCustomButton>:
+    orientation: "vertical"
+    Button:
+        text: "B1"
+        Image:
+            source: 'kivy.png'
+            y: self.parent.y + self.parent.height - 200
+            x: self.parent.x
+    Label:
+        text: "A label"
+
+
+
+<WordCloudList>:
+	theme_text_color: "Primary"
+	on_release: app.root.set_wordCloud_settings(self)
+	secondary_font_style : "Caption"
+	
+	IconLeftWidget:
+		id: icon
+		icon: root.icon
+		theme_text_color: 'Custom'
+		text_color: app.theme_cls.primary_color
+
+
+<SettingsList>:
+	theme_text_color: "Primary"
+	on_release: app.set_settings(self)
+	secondary_font_style : "Caption"
+
+	IconLeftWidget:
+		id: icon
+		icon: root.icon
+		theme_text_color: 'Custom'
+		text_color: app.theme_cls.primary_color
+
+		     
+<LoadDialog>: 
+	BoxLayout: 
+		size: root.size 
+		pos: root.pos 
+		orientation: "vertical"
+		FileChooserListView: 
+			id: filechooser
+		BoxLayout: 
+			size_hint_y: None 
+			height: 30 
+			MDRaisedButton:
+				text: "Cancel"				
+				on_release: root.cancel()
+			MDRaisedButton: 
+				text: "Load"
+				size_hint: None, None
+				size: "980dp", "60dp"
+				pos_hint: {"bottom": 1}				
+				on_release: root.load(filechooser.path, filechooser.selection)
+<SaveDialog>: 
+	text_input: text_input 
+	BoxLayout: 
+		size: root.size 
+		pos: root.pos 
+		orientation: "vertical" 
+		FileChooserListView: 
+			id: filechooser 
+			on_selection: text_input.text = self.selection and self.selection[0] or ' '
+		TextInput: 
+			id: text_input 
+			size_hint_y: None 
+			height: 30 
+			multiline: False
+		BoxLayout: 
+			size_hint_y: None 
+			height: 30 
+			MDRaisedButton:
+				text: "Cancel"							
+				on_release: root.cancel()
+			MDRaisedButton:
+				text: "Save"
+				on_release: root.save(filechooser.path, text_input.text) 
+
+   			
+SetDrawerScreen:
+	screen_manager: screen_manager
+	nav_drawer: nav_drawer
+	progress_bar : progress_bar
+	display_time : display_time
+	text_input: text_input
+	
+    ScreenManager:
+        id: screen_manager
+
+        #making Word Cloud the default screen sometimes causes a weak reference error
+        #walkaround used that is auto opening word cloud screen on start
+
+        Screen:
+            name: "Home"
+            BoxLayout:
+                orientation: 'vertical'
+                MDToolbar:
+                    title: "Home"
+                    elevation: 10
+                    left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+                BoxLayout:
+                    orientation: 'vertical'
+                    BoxLayout:
+                        #RstDocument:
+                        #    text: text_input.text
+                        #    show_errors: True
+                    BoxLayout:
+                        size_hint_y: None
+                        height: 30
+                        spacing: 10
+                        MDFillRoundFlatIconButton:
+                            icon: "file-download"
+                            text: 'Load a file into the app'
+                            on_release: root.show_load()
+                        MDFillRoundFlatIconButton:
+                            icon: "android"
+                            text: 'Save a generated word cloud as image'
+                            on_release: root.show_save()
+                    BoxLayout:
+
+                        MDIcon:
+                            icon: "folder"
+                            font_size : 60
+                            theme_text_color: 'Custom'
+                            text_color: app.theme_cls.accent_color
+                        MDLabel:
+                            text: "The File chooser accepts only small size files that contain text especially .txt files"
+                            theme_text_color: "Primary"
+                            halign: "left"
+                            pos_hint: {"left": 1,"top": 0.9}
+
+        Screen:
+            name: "Word Cloud"
+            BoxLayout:
+                orientation: 'vertical'
+                MDToolbar:
+                    title: "Word Cloud"
+                    elevation: 10
+                    left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+                MDBottomNavigation:
+                    id: panel
+
+                    MDBottomNavigationItem:
+                        name: "wordcloud1"
+                        text: "Word Cloud"
+                        icon: "cloud"
+
+                        BoxLayout:
+                            orientation: "vertical"
+                            size_hint_y: None
+                            height: self.minimum_height
+                            spacing: 10
+                            pos_hint: {"center_x": .5, "top": 0.9}
+
+                            MDTextFieldRect:
+                                id: text_input
+                                size_hint:1,None
+                                height:"200dp"
+                                width: self.height
+                                hint_text: "Enter or Paste Text Here :"
+                                max_height: "1000dp"
+                                mode:"fill"
+                                fill_color: 0, 0, 0, .4
+                                multiline: True
+                                pos_hint:{'center_x':.5,'center_y':.5}
+                            MDProgressBar:
+                                id: progress_bar
+                                pos_hint: {"center_y": .6}
+                                type: "indeterminate"
+                                color: app.theme_cls.accent_color
+
+                            MDRaisedButton:
+                                text: "Generate Word Cloud"
+                                size_hint: None, None
+                                size: "580dp", "50dp"
+                                pos_hint: {"center_x": .5, "bottom": 1}
+                                on_release: app.generate_word_cloud()
+
+                            BoxLayout:
+                                id: box_widget
+                                orientation: "vertical"
+                                size_hint_y: None
+                                height: self.minimum_height
+                                spacing: 10
+                                pos_hint: {"center_x": .5, "top": 0.8}
+
+                                MDRaisedButton:
+                                    text : "View Word Cloud"
+                                    size_hint: None, None
+                                    size: "580dp", "50dp"
+                                    pos_hint: {"center_x": .5, "bottom": 1}
+                                    on_release : app.root.open_another_screen()
+                                BoxLayout:
+                                    id: box_widget
+                                    orientation: "horizontal"
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    spacing: 10
+                                    pos_hint: {"center_x": .5, "bottom": 0.8}
+
+                                    MDLabel:
+                                        id: display_time
+                                        text: "Time Taken to generate Word Cloud"
+                                        pos_hint: {"top": 0.6}
+                                        theme_text_color: "Primary"
+                                        halign: "center"
+
+                    MDBottomNavigationItem:
+                        name: "wordcloud2"
+                        text: "Options"
+                        icon: "tools"
+                        on_tab_press: app.root.set_wordCloud_settingsGUI()
+
+                        ScrollView:
+                            MDList:
+                                id: wordCloud_md_list
+
+                        #MDSwitch:
+                            #size_hint: None, None
+                            #size: dp(36), dp(48)
+                            #pos_hint: {"center_x": .5}
+                            #on_active: app.root.set_wordCloud_settingsGUI()
+
+
+        Screen:
+            name: "Stop Words"
+            MDBoxLayout:
+                orientation: 'vertical'
+                spacing: "10dp"
+                MDToolbar:
+                    title: "Stop Words"
+                    elevation: 10
+                    left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+                    right_action_items: [['eraser', lambda x: app.clearStopWords()] , ['restore', lambda x: app.resetStopWordsToDefault()]]
+
+
+
+                MDBottomNavigation:
+                    id: second_panel
+
+                    MDBottomNavigationItem:
+                        name: "tab1"
+                        text: "Display Stopwords"
+                        icon: "newspaper-variant"
+                        ScrollView:
+                            MDLabel:
+                                id: stopwords_md_label
+                                text: app.myStopwords_text
+                                text_size: self.width, None
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                theme_text_color: "Primary"
+                                halign: "left"
+
+
+
+                    MDBottomNavigationItem:
+                        name: "tab2"
+                        text: "Edit Stopwords"
+                        icon: "pencil"
+                        BoxLayout:
+                            orientation: "vertical"
+                            size_hint_y: None
+                            height: self.minimum_height
+                            spacing: 10
+                            pos_hint: {"center_x": .5, "bottom": 1}
+                            MDTextFieldRect:
+                                id: stopwords_input
+                                text: app.myStopwords_text
+                                size_hint:1,None
+                                height:"500dp"
+                                width: self.height
+                                hint_text: "Edit Stopwords Here :"
+                                max_height: "1000dp"
+                                mode:"fill"
+                                fill_color: 0, 0, 0, .4
+                                multiline: True
+                                pos_hint:{'center_x':.5,'center_y':.5}
+                            MDRaisedButton:
+                                text : "Save Edit"
+                                size_hint: None, None
+                                size: "580dp", "50dp"
+                                pos_hint: {"center_x": .5, "bottom": 1}
+                                on_release : app.saveStopwords()
+
+
+
+
+        Screen:
+            name: "Settings"
+            MDBoxLayout:
+                orientation: 'vertical'
+                spacing: "10dp"
+                MDToolbar:
+                    title: "Settings"
+                    elevation: 10
+                    left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+                MDBottomNavigation:
+
+                    MDBottomNavigationItem:
+                        name: "help_tab"
+                        text: "Help"
+                        icon: "help-circle"
+                        BoxLayout:
+                            orientation: 'vertical'
+                            ScrollView:
+                                MDLabel:
+                                    text: app.help_text
+                                    text_size: self.width, None
+                                    size_hint_y: None
+                                    height: self.texture_size[1]
+                                    theme_text_color: "Primary"
+                                    halign: "center"
+                    MDBottomNavigationItem:
+                        name: "settings_tab"
+                        text: "Settings"
+                        icon: "tools"
+                        on_tab_press: app.root.set_settingsGUI()
+                        ScrollView:
+                            MDList:
+                                id: settings_md_list
+
+
+
+
+
+        Screen:
+
+        Screen:
+            name: "About"
+            BoxLayout:
+                orientation: 'vertical'
+                MDToolbar:
+                    title: "About"
+                    elevation: 10
+                    left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+                ScrollView:
+                    MDLabel:
+                        text: app.about_text
+                        text_size: self.width, None
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+
+    MDNavigationDrawer:
+        id: nav_drawer
+
+        ContentNavigationDrawer:
+            id: content_drawer
